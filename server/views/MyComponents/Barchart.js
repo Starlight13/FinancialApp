@@ -7,7 +7,7 @@ class BarChartVerticalWithLabels extends React.PureComponent {
     
     render() {
 
-        const CUT_OFF = 20
+        const CUT_OFF = 30
         const Labels = ({ x, y, bandwidth, data }) => (
             data.map((value, index) => (
                 <>
@@ -16,7 +16,7 @@ class BarChartVerticalWithLabels extends React.PureComponent {
                     x={ x(index) + (bandwidth / 2) }
                     y={ value < CUT_OFF ? y(value) - 10 : y(value) + 15 }
                     fontSize={ 14 }
-                    fill={ value >= CUT_OFF ? 'white' : 'black' }
+                    fill={ 'black' }
                     alignmentBaseline={ 'middle' }
                     textAnchor={ 'middle' }
                 >

@@ -5,7 +5,7 @@ import {
   Dimensions
 } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
-import styles from '../styles'
+import styles from '../Screen/styles'
 
  class PieChartWithDynamicSlices extends React.PureComponent {
 
@@ -22,8 +22,7 @@ import styles from '../styles'
   render() {
     const { labelWidth, selectedSlice } = this.state;
     const { label, value } = selectedSlice;
-    const keys = ['Fun', 'Other', 'Transport', 'Home', 'Food'];
-    // const values = [15, 25, 35, 45, 55];
+    const keys = ['Food', 'Fun', 'Home', 'Other', 'Transport'];
     const colors1 = ['#741136', '#905A6E', '#D75E8B', '#F196B8', '#F1BACF']
     const colors2 = ['#236103', '#4F7E36', '#6BD035', '#95EF65', '#BDEFA2']
     const data = keys.map((key, index) => {
@@ -41,8 +40,8 @@ import styles from '../styles'
       <View style={{ justifyContent: 'center', flex: 1 }}>
         <PieChart
           style={{ height: 150 }}
-          outerRadius={'80%'}
-          innerRadius={'45%'}
+          outerRadius={'29%'}
+          innerRadius={'5%'}
           data={data}
         />
         <Text

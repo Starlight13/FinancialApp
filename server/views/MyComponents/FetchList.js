@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,41 +8,65 @@ import {
 } from 'react-native';
 import styles from '../Screen/styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MainLink from '../Screen/MainLink';
 
 
 const SCREEN_WIDTH = Math.round(Dimensions.get('screen').width);
 
 export default class FetchList extends Component{
-    state = {
-      data: []
-    };
+  constructor(props){
+    super(props);
+    this.state = {
+      data: [],
+      isFetching: false
+    }
+  }
   
     componentDidMount(){
       this.fetchData();
     };
+
+    onRefresh() {
+      this.props.trigger = !this.props.trigger;
+      this.setState({isFetching: true,},() => {this.fetchData();});
+ }
+
+    // useEffect(() => {
+    //   fetch(MainLink() + ':8080')
+    //   .then((res) =>nres.json())
+    //   .then((jsonResp) => this.setState({data: jsonResp}))
+    //   .catch(err => (console.log()));
+    // }, []);
+
+    fetchRoute = () => {
+      if(this.props.route == 'Home')
+        return MainLink()+':8080/Home'
+      else if(this.props.route == 'Roomie')
+        return MainLink()+':8080/Roomie'
+    }
   
     fetchData = async () => {
-      const response = await fetch('http://192.168.0.15:8080');
-      const json = await response.json();
-      this.setState({data: json.results});
+      const response = await fetch(this.fetchRoute());
+      this.setState({data: await response.json()});
+      this.setState({ isFetching: false })
     };
   
     renderItem = ({item}) => {
       return(
       <View style={{flexDirection: 'row', width: SCREEN_WIDTH, height: 70}}>
         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.TextMoney}>${item.name.cost}</Text>
+          <Text style={styles.TextMoney}>${item.price}</Text>
         </View>
         <View style={{width: 30, justifyContent: 'center', alignItems: 'center'}}>
-          {item.name.roomie === true? <FontAwesome5 name="user-friends" size={18} color="grey"/>:<Text></Text>}
+          {item.roomie === true? <FontAwesome5 name="user-friends" size={18} color="grey"/>:<Text></Text>}
         </View>
         <View style={{flex:1, justifyContent: 'center'}}>
-          <Text style={{fontSize: 16}}>{item.name.name}</Text>
-          <Text style={{color:"grey", fontSize: 12, fontStyle: 'italic'}}>{item.name.info}</Text>
-          <Text style={{color:"grey", fontSize: 12, fontStyle: 'italic'}}>{item.name.date}</Text>
+          <Text style={{fontSize: 16}}>{item.name}</Text>
+          <Text style={{color:"grey", fontSize: 12, fontStyle: 'italic'}}>{item.info}</Text>
+          <Text style={{color:"grey", fontSize: 12, fontStyle: 'italic'}}>{item.date}</Text>
         </View>
         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.Text}>{item.name.category}</Text>
+          <Text style={styles.Text}>{item.category}</Text>
         </View>
       </View>
       )
@@ -71,6 +95,8 @@ export default class FetchList extends Component{
             renderItem= {this.renderItem}
             ItemSeparatorComponent = {this.renderSeparator}
             style={{backgroundColor: '#f5f3f1'}}
+            onRefresh={() => this.onRefresh()}
+            refreshing={this.state.isFetching}
           />
         </View>
       )

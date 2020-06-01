@@ -7,15 +7,9 @@ import {Dimensions} from 'react-native'
 const SCREEN_WIDTH = Math.round(Dimensions.get('screen').width);
 
 
-class ExtrasExample extends React.PureComponent {
+class myChart extends React.PureComponent {
 
     render() {
-
-        
-
-        /**
-         * Both below functions should preferably be their own React Components
-         */
 
         const HorizontalLine = (({ y }) => (
             <Line
@@ -52,4 +46,4 @@ class ExtrasExample extends React.PureComponent {
 
 }
 
-export default ExtrasExample
+export default myChart

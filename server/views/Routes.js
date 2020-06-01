@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React , {useState} from 'react';
 import {
   Button,
 } from 'react-native';
@@ -14,12 +14,17 @@ import AccountScreen from './Screen/AccountScreen';
 import AddSpendScreen from './Screen/AddSpendScreen';
 import RoomieScreen from './Screen/RoomieScreen';
 import StatisticsScreen from './Screen/StatisticsScreen';
-import SplitBillScreen from './Screen/SplitBillScreen';
+import MainLink from './Screen/MainLink';
+import LogInScreen from './Screen/AuthScreens/LogInScreen';
+import SignUpScreen from './Screen/AuthScreens/SignUpScreen';
+import ForgotPassScreen from './Screen/AuthScreens/ForgotPassScreen';
+
+
 
 
 const HomeStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 
 
@@ -30,7 +35,7 @@ function HomeStackScreen({ navigation }) {
       <HomeStack.Screen name="My Account" component={AccountScreen} options={{
         headerLeft: () => (
           <Button
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Home', {screen: 'Home'})}
             title="Home"
             color="pink"
           />
@@ -39,32 +44,34 @@ function HomeStackScreen({ navigation }) {
       <HomeStack.Screen name="Add Spendings" component={AddSpendScreen} options={{
         headerLeft: () => (
           <Button
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Home', {screen: 'Home'})}
             title="Cancel"
             color="pink"
           />
-        ),
-        headerRight: () => (
-          <Button
-            onPress={() =>
-                fetch('http://192.168.0.15:8080')
-                  .then((response) => response.json())
-                  .then((json) => alert(json.name))
-                  .catch((error) => console.error(error))
-                  .finally(() => console.log("Hello to you"))
-              
-            }
-            title="Add"
-            color='pink'
-          />
-        ),
+        )
       }} />
     </HomeStack.Navigator>
   )
 }
 
 export default function Routes() {
+    const [isLoggedIn, changeLog] = useState(false);
+
+    const _handler = () => {
+      changeLog(true);
+    }
+
     return (
+      isLoggedIn === false 
+      ?
+      <NavigationContainer>
+        <AuthStack.Navigator>
+         <AuthStack.Screen name="Log In" component={LogInScreen} initialParams={{handler: _handler}} options={{ headerShown: false }} />
+         <AuthStack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false }} />
+         <AuthStack.Screen name="Forgot Password" component={ForgotPassScreen} options={{ headerShown: false }} />
+        </AuthStack.Navigator>
+      </NavigationContainer> 
+      :
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -73,8 +80,6 @@ export default function Routes() {
     
                 if (route.name === 'Home') {
                   iconName = 'wallet'
-                } else if (route.name === 'SplitBill') {
-                  iconName = 'money-check-alt';
                 } else if (route.name === 'Roomie') {
                   iconName = 'user-friends'
                 } else if (route.name === "Statistics") {
@@ -91,7 +96,6 @@ export default function Routes() {
             <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }} />
             <Tab.Screen name="Roomie" component={RoomieScreen} options={{ headerShown: false }} />
             <Tab.Screen name="Statistics" component={StatisticsScreen} options={{ headerShown: false }} />
-            <Tab.Screen name="SplitBill" component={SplitBillScreen} options={{ title: "Split the bill" }} />
           </Tab.Navigator>
         </NavigationContainer>
       );

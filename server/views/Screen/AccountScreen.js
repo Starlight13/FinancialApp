@@ -20,8 +20,8 @@ export default function AccountScreen() {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView style={styles.SafeAreaView}>
           <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 90 }}>
-            <View style={{ flex: 1 }} >
-              <Image style={styles.Avatar} source={{ uri: "https://html5css.ru/howto/img_avatar2.png" }} />
+            <View style={{ flex: 1, alignItems:'center', justifyContent: 'center' }} >
+            <FontAwesome5 name="qq" size={40} color='#ffb0b3'/>
             </View>
             <View style={{ justifyContent: 'center', flex: 2, alignItems: 'flex-start' }} >
               <Text style={styles.TextMoney}>@testUser1</Text>
@@ -33,13 +33,6 @@ export default function AccountScreen() {
             <TouchableOpacity style={styles.AccountOption}>
               <FontAwesome5 name="user-edit" size={20} color='grey' style={{ marginLeft: 10 }} />
               <Text style={styles.TextAccountOption}>Change username</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.AccountOption}>
-              <Text style={styles.TextAccountOption}>Change E-mail</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.AccountOption}>
-              <FontAwesome5 name="camera" size={20} color='grey' style={{ marginLeft: 10 }} />
-              <Text style={styles.TextAccountOption}>Change profile picture</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.AccountOption}>
               <FontAwesome5 name="key" size={20} color='grey' style={{ marginLeft: 10 }} />
