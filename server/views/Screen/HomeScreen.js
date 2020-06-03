@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import styles from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -28,7 +29,6 @@ export default function HomeScreen(props) {
     const [isLoading, changeLoad] = useState(true);
 
     useEffect(() => {
-      console.log("The user is " + user);
       fetchExp();
     }, []);
 
@@ -42,14 +42,19 @@ export default function HomeScreen(props) {
       .then((res) => res.json())
       .then((resJson) => changeExp(resJson[0].sum))
       .catch(err => console.log(err))
+      .finally(() => changeLoad(false))
     }
-
+    if (isLoading === true)
+            return (
+                <View style={styles.CenteredView}>
+                    <ActivityIndicator />
+                </View>)
     return (
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView style={styles.SafeAreaView}>
           <View style={{ height: 100, flexDirection: "row", justifyContent: 'space-around', alignItems: 'center', backgroundColor: 'white' }}>
-            <Text style={styles.TextMoney}>Month Expances:{"\n"} {monthExp}</Text>
+            <Text style={styles.TextMoney}>Month Expances:{"\n"} ${monthExp}</Text>
             <TouchableOpacity
               onPress={() => props.navigation.navigate("My Account")}>
               <View

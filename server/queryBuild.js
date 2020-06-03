@@ -46,14 +46,14 @@ const addSpend = (user, name, price, category, roomie, info) => {
 }
 
 const getSumByCat = (user) => {
-    return(`SELECT SUM(Price) from userhistory\n`+
+    return(`SELECT SUM(Price), category from userhistory\n`+
     `where userid = ${user} and roomie = true\n`+
     `and date_part(\'month\', datestamp) = date_part(\'month\', current_date)\n` +
     'group by category order by category ')
 }
 
 const mySumByCat = (user) => {
-    return(`SELECT SUM(Price) from userhistory\n`+
+    return(`SELECT SUM(Price), category from userhistory\n`+
     `where userid = ${user}\n and date_part(\'month\', datestamp) = date_part(\'month\', current_date)`+
     'group by category order by category ')
 }
@@ -88,12 +88,6 @@ const addRoomie = (user, roomie) => {
     )
 }
 
-
-//////////
-
-
-
-
 const deleteRoomie = (user, roomie) => {
     return(`Update users\n`+
             `Set roomieid = NULL where userid = ${user};\n`+
@@ -102,9 +96,7 @@ const deleteRoomie = (user, roomie) => {
     )
 }
 
-const getUsernameByID = (id) => {
-    return(`select username where userid = ${id}`)
-}
+
 exports.authUser = authUser;
 exports.userExpense = userExpense;
 exports.addSpend = addSpend;
@@ -112,7 +104,6 @@ exports.addUser = addUser;
 exports.addRoomie = addRoomie;
 exports.deleteRoomie = deleteRoomie;
 exports.getRoomie = getRoomie;
-exports.getUsernameByID = getUsernameByID;
 exports.commonExpense = commonExpense;
 exports.compareExpense = compareExpense;
 exports.getSumByCat = getSumByCat;

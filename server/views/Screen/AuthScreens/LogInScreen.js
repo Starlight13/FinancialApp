@@ -52,6 +52,7 @@ export default LogInScreen = (props) => {
                   alert("Incorrect email or password")
                 }
                 else {
+                  console.log('Gotten user' + json[0].userid)
                   props.route.params.handler(json[0].userid)
                 }
               })

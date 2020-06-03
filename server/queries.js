@@ -130,36 +130,14 @@ async function addRoomie(user, roomie){
     });
 }
 
-
-///////////
-
-
-async function getUsernameByID(user){
-    return new Promise((resolve, reject) => {
-        pool.query(query.getUsernameByID(user), (err, result) =>{
-            if (err) {throw err}
-            resolve({ok: result.rowCount > 0 ? true : false});
-        });
-    });
-}
-
-
-
-
-
 async function deleteRoomie(user, roomie){
     return new Promise((resolve, reject) => {
         pool.query(query.deleteRoomie(user, roomie), (err, result) =>{
             if (err) {throw err}
-            resolve({ok: result.rowCount > 0 ? true : false});
+            resolve(result.rows);
         });
     });
 }
-
-
-
-
-
 
 
 
@@ -181,7 +159,6 @@ exports.addUser = addUser;
 exports.addRoomie = addRoomie;
 exports.deleteRoomie = deleteRoomie;
 exports.getRoomie = getRoomie;
-exports.getUsernameByID = getUsernameByID;
 exports.commonExpense = commonExpense;
 exports.compareExpense = compareExpense;
 exports.getSumByCat = getSumByCat;

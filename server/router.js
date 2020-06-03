@@ -21,11 +21,7 @@ router.get('/Home', async (ctx, next) => {
     const roomie = ctx.request.headers.roomie;
     ctx.body = await pool.compareExpense(roomie);
 })
-.get('/roomiePie', async (ctx, next) => {
-    const roomie = ctx.request.headers.roomie;
-    ctx.body = await pool.getSumByCat(roomie);
-})
-.get('/myPie', async (ctx, next) => {
+.get('/getPie', async (ctx, next) => {
     const user = ctx.request.headers.user;
     ctx.body = await pool.getSumByCat(user);
 })
@@ -83,5 +79,11 @@ router.get('/Home', async (ctx, next) => {
     const user = ctx.request.headers.user;
     const roomie = ctx.request.header.roomie;
     ctx.body = await pool.addRoomie(user, roomie);
+})
+.get('/deleteRoomie', async (ctx, next) => {
+    const user = ctx.request.headers.user;
+    const roomie = ctx.request.header.roomie;
+    ctx.body = await pool.deleteRoomie(user, roomie);
 });
+
 exports.routes = router.routes();

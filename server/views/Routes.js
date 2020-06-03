@@ -18,6 +18,7 @@ import MainLink from './Screen/MainLink';
 import LogInScreen from './Screen/AuthScreens/LogInScreen';
 import SignUpScreen from './Screen/AuthScreens/SignUpScreen';
 import ForgotPassScreen from './Screen/AuthScreens/ForgotPassScreen';
+import EditRoomieScreen from './Screen/EditRoomieScreen';
 
 
 
@@ -54,19 +55,30 @@ const  HomeStackScreen = (props) => {
   )
 }
 
+const  RoomieStackScreen = (props) => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Roomie" component={RoomieScreen} initialParams={{userId: props.route.params.userId}} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Edit Roomie" component={EditRoomieScreen} initialParams={{userId: props.route.params.userId}} options={{
+        headerLeft: () => (
+          <Button
+            onPress={() => props.navigation.navigate('Roomie', {screen: 'Roomie'})}
+            title="Back"
+            color="pink"
+          />
+        )
+      }} />
+    </HomeStack.Navigator>
+  )
+}
+
 export default function Routes() {
     const [isLoggedIn, changeLog] = useState(false);
     const [userId, changeUser] = useState(-1);
 
     const _handler = (userid) => {
-      console.log(userId)
-      if(userId == -1){
-        changeUser(userid);
-      }
-      else{
-        changeUser(-1);
-      };
-      console.log(userId);
+      changeUser(userid);
+      console.log("Passed User" + userId);
       changeLog(!isLoggedIn);
     }
 
@@ -103,9 +115,10 @@ export default function Routes() {
             }}
           >
             <Tab.Screen name="Home" component={HomeStackScreen} initialParams={{handler: _handler, userId: userId}} options={{ headerShown: false }} />
-            <Tab.Screen name="Roomie" component={RoomieScreen} initialParams={{userId: userId}}  options={{ headerShown: false }} />
+            <Tab.Screen name="Roomie" component={RoomieStackScreen} initialParams={{userId: userId}}  options={{ headerShown: false }} />
             <Tab.Screen name="Statistics" component={StatisticsScreen} initialParams={{userId: userId}}  options={{ headerShown: false }} />
           </Tab.Navigator>
         </NavigationContainer>
+          
       );
 }

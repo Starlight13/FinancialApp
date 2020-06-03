@@ -26,11 +26,11 @@ class BarChartVerticalWithLabels extends React.PureComponent {
         )
 
         return (
-            <View style={{ flexDirection: 'row', height: 150, marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', height: 225, marginTop: 10 }}>
                 <BarChart
-                    style={{ flex: 0.5 }}
+                    style={{ flex: 1 }}
                     data={this.props.data}
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                    svg={{ fill: '#6edcf0' }}
                     contentInset={{ top: 10, bottom: 10 }}
                     spacing={0.2}
                     gridMin={0}
