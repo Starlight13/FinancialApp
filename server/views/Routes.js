@@ -28,14 +28,14 @@ const Tab = createBottomTabNavigator();
 
 
 
-function HomeStackScreen({ navigation }) {
+const  HomeStackScreen = (props) => {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <HomeStack.Screen name="My Account" component={AccountScreen} options={{
+      <HomeStack.Screen name="Home" component={HomeScreen} initialParams={{userId: props.route.params.userId}} options={{ headerShown: false }} />
+      <HomeStack.Screen name="My Account" component={AccountScreen} initialParams={{handler: props.route.params.handler, userId: props.route.params.userId}} options={{
         headerLeft: () => (
           <Button
-            onPress={() => navigation.navigate('Home', {screen: 'Home'})}
+            onPress={() => props.navigation.navigate('Home', {screen: 'Home'})}
             title="Home"
             color="pink"
           />
@@ -44,8 +44,8 @@ function HomeStackScreen({ navigation }) {
       <HomeStack.Screen name="Add Spendings" component={AddSpendScreen} options={{
         headerLeft: () => (
           <Button
-            onPress={() => navigation.navigate('Home', {screen: 'Home'})}
-            title="Cancel"
+            onPress={() => props.navigation.navigate('Home', {screen: 'Home'})}
+            title="Back"
             color="pink"
           />
         )
@@ -56,9 +56,18 @@ function HomeStackScreen({ navigation }) {
 
 export default function Routes() {
     const [isLoggedIn, changeLog] = useState(false);
+    const [userId, changeUser] = useState(-1);
 
-    const _handler = () => {
-      changeLog(true);
+    const _handler = (userid) => {
+      console.log(userId)
+      if(userId == -1){
+        changeUser(userid);
+      }
+      else{
+        changeUser(-1);
+      };
+      console.log(userId);
+      changeLog(!isLoggedIn);
     }
 
     return (
@@ -93,9 +102,9 @@ export default function Routes() {
               inactiveTintColor: 'gray',
             }}
           >
-            <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }} />
-            <Tab.Screen name="Roomie" component={RoomieScreen} options={{ headerShown: false }} />
-            <Tab.Screen name="Statistics" component={StatisticsScreen} options={{ headerShown: false }} />
+            <Tab.Screen name="Home" component={HomeStackScreen} initialParams={{handler: _handler, userId: userId}} options={{ headerShown: false }} />
+            <Tab.Screen name="Roomie" component={RoomieScreen} initialParams={{userId: userId}}  options={{ headerShown: false }} />
+            <Tab.Screen name="Statistics" component={StatisticsScreen} initialParams={{userId: userId}}  options={{ headerShown: false }} />
           </Tab.Navigator>
         </NavigationContainer>
       );

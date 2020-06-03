@@ -1,13 +1,11 @@
 {
-  "name": "Again",
-  "version": "0.0.1",
-  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.9",
@@ -18,6 +16,7 @@
     "@react-navigation/stack": "^5.2.10",
     "bcryptjs": "^2.4.3",
     "events": "^3.1.0",
+    "expo": "^37.0.12",
     "knex": "^0.21.1",
     "koa": "^2.12.0",
     "koa-bodyparser": "^4.3.0",
@@ -28,8 +27,9 @@
     "koa-server": "^1.2.2",
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-picker-select": "^7.0.0",
     "react-native-reanimated": "^1.8.0",
@@ -39,9 +39,11 @@
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^2.14.0",
-    "react-native-vector-icons": "^6.6.0"
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
+    "babel-preset-expo": "~8.1.0",
     "@babel/core": "7.9.0",
     "@babel/runtime": "7.9.2",
     "@react-native-community/eslint-config": "0.0.5",
@@ -53,5 +55,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "private": true
 }

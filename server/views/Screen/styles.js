@@ -11,7 +11,7 @@ export default StyleSheet.create({
       backgroundColor: 'pink'
     },
     Text: {
-        fontSize: 18, 
+        fontSize: 17, 
         fontWeight: "100"
     },
     BarText: {

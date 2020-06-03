@@ -4,35 +4,34 @@ import { BarChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 
 class BarChartVerticalWithLabels extends React.PureComponent {
+
     
     render() {
 
-        const CUT_OFF = 30
+
         const Labels = ({ x, y, bandwidth, data }) => (
             data.map((value, index) => (
-                <>
                 <Text
                     key={ index }
                     x={ x(index) + (bandwidth / 2) }
-                    y={ value < CUT_OFF ? y(value) - 10 : y(value) + 15 }
+                    y={  y(value) + 15 }
                     fontSize={ 14 }
-                    fill={ 'black' }
+                    fill={ 'white'}
                     alignmentBaseline={ 'middle' }
                     textAnchor={ 'middle' }
                 >
                     {value}
                 </Text>
-                </>
             ))
         )
 
         return (
-            <View style={{ flexDirection: 'row', height: 250, paddingVertical: 16 }}>
+            <View style={{ flexDirection: 'row', height: 150, marginTop: 10 }}>
                 <BarChart
-                    style={this.props.place === "roomie" ? {flex: 0.5} : {flex: 1}}
+                    style={{ flex: 0.5 }}
                     data={this.props.data}
-                    svg={{ fill: '#7dbeff' }}
-                    contentInset={{ top: 10, bottom: 0 }}
+                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                    contentInset={{ top: 10, bottom: 10 }}
                     spacing={0.2}
                     gridMin={0}
                 >

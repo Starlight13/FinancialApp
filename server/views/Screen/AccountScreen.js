@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -8,43 +8,123 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
+  TextInput,
+  Button,
+  Dimensions
 } from 'react-native';
 import styles from './styles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MainLink from './MainLink';
+
+const SCREEN_WIDTH = Math.round(Dimensions.get('screen').width);
 
 
 
-export default function AccountScreen() {
-    return (
-      <>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView style={styles.SafeAreaView}>
-          <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 90 }}>
-            <View style={{ flex: 1, alignItems:'center', justifyContent: 'center' }} >
-            <FontAwesome5 name="qq" size={40} color='#ffb0b3'/>
-            </View>
-            <View style={{ justifyContent: 'center', flex: 2, alignItems: 'flex-start' }} >
-              <Text style={styles.TextMoney}>@testUser1</Text>
-              <Text style={{ fontWeight: "700", color: 'grey', marginVertical: 10 }}>o.romanishina@gmail.com</Text>
-            </View>
+export default function AccountScreen(props) {
+
+  const [userInfo, setUserInfo] = useState([{}]);
+
+  const [hideUsernameChange, setHideUsernameChange] = useState(true);
+  const [hidePasswordChange, setPasswordChange] = useState(true);
+
+  const [changedUsername, setUsername] = useState('');
+  const [changedPassword, setPassword] = useState('');
+
+  useEffect(() => {
+    fetchData();
+  });
+
+  const fetchData = async () => {
+    console.log(props.route.params.userId);
+    const response = await fetch(MainLink() + 'getUserInfo', {
+      method: 'GET',
+      headers: {
+        user: props.route.params.userId,
+      }
+    });
+    setUserInfo(await response.json());
+  };
+
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={styles.SafeAreaView}>
+        <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 90 }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
+            <FontAwesome5 name="qq" size={40} color='#ffb0b3' />
           </View>
-          <ScrollView style={{backgroundColor:"pink"}}>
+          <View style={{ justifyContent: 'center', flex: 2, alignItems: 'flex-start' }} >
+            <Text style={styles.TextMoney}>@{userInfo[0].username}</Text>
+            <Text style={{ fontWeight: "700", color: 'grey', marginVertical: 3 }}>{userInfo[0].email}</Text>
+            <Text style={{ fontWeight: "400", color: 'grey', marginVertical: 3 }}>User id: {userInfo[0].userid}</Text>
+          </View>
+        </View>
+        <ScrollView style={{ backgroundColor: "pink" }}>
           <View style={{ backgroundColor: 'pink', flex: 1, alignItems: 'flex-start' }}>
-            <TouchableOpacity style={styles.AccountOption}>
+            <TouchableOpacity style={styles.AccountOption} onPress={() => setHideUsernameChange(!hideUsernameChange)} >
               <FontAwesome5 name="user-edit" size={20} color='grey' style={{ marginLeft: 10 }} />
               <Text style={styles.TextAccountOption}>Change username</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.AccountOption}>
+            {
+              !hideUsernameChange ?
+                <>
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: SCREEN_WIDTH, marginVertical: 7 }}>
+                    <TextInput style={styles.TextInput}
+                      placeholder="Enter new username"
+                      onChangeText={text => setUsername(text)}
+                      value={changedUsername}></TextInput>
+                    <Button title="Change Username" onPress={() => {
+                      fetch(MainLink() + "changeUsername", {
+                        method: 'GET',
+                        headers: {
+                          user: props.route.params.userId,
+                          username: changedUsername,
+                        }
+                      });
+                      alert(`Username changed to @${changedUsername}`);
+                      fetchData();
+                    }}></Button>
+                  </View>
+                </>
+                : <View></View>
+            }
+            <TouchableOpacity style={styles.AccountOption} onPress={() => setPasswordChange(!hidePasswordChange)}>
               <FontAwesome5 name="key" size={20} color='grey' style={{ marginLeft: 10 }} />
               <Text style={styles.TextAccountOption}>Change password</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.AccountOption}>
+            {
+              !hidePasswordChange ?
+                <>
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: SCREEN_WIDTH, marginVertical: 7 }}>
+                    <TextInput style={styles.TextInput}
+                      placeholder="Enter new password"
+                      onChangeText={text => setPassword(text)}
+                      value={changedPassword}></TextInput>
+                    <Button title="Change Password" onPress={() => {
+                      fetch(MainLink() + "changePass", {
+                        method: 'GET',
+                        headers: {
+                          user: props.route.params.userId,
+                          password: changedPassword,
+                        }
+                      });
+                      alert('Password Changed!')
+                    }}></Button>
+                  </View>
+                </>
+                : <View></View>
+            }
+            <TouchableOpacity style={styles.AccountOption} onPress={() => {
+              props.route.params.handler(-1)
+            }
+            }
+            >
               <FontAwesome5 name="sign-out-alt" size={20} color='grey' style={{ marginLeft: 10 }} />
               <Text style={styles.TextAccountOption}>Sign out</Text>
             </TouchableOpacity>
           </View>
-          </ScrollView>
-        </SafeAreaView>
-      </>
-    )
-  }
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  )
+}

@@ -15,6 +15,7 @@ export default class StatisticsScreen extends Component {
             barData: [],
             lineData: [],
             isFetching: false,
+            user: this.props.route.params.userId
         }
     }
 
@@ -28,6 +29,8 @@ export default class StatisticsScreen extends Component {
    }
 
     fetchData(){
+        this.setState({barData: []})
+        this.setState({lineData: []})
         this.fetchBarData();
         this.fetchLineData();
         this.setState({ isFetching: false })
@@ -35,7 +38,12 @@ export default class StatisticsScreen extends Component {
 
 
     fetchBarData = async () => {
-        const response = await fetch(MainLink()+':8080/barData');
+        const response = await fetch(MainLink()+'barData', {
+            method: 'GET',
+            headers: {
+              user: this.state.user,
+            }
+          });
         json = await response.json()
         for(var i in json){
             console.log(json[i].sum)
@@ -45,12 +53,18 @@ export default class StatisticsScreen extends Component {
      };
 
      fetchLineData = async () => {
-        const response = await fetch(MainLink()+':8080/lineData');
+        this.setState({lineData: []})
+        const response = await fetch(MainLink()+'lineData', {
+            method: 'GET',
+            headers: {
+              user: this.state.user,
+            }
+          });
         json = await response.json()
         for(var i in json){
-            console.log(json[i].sum)
+            // console.log(json[i].sum)
             this.setState({lineData: this.state.lineData.concat(json[i].sum)});
-            console.log(this.state.lineData)
+            // console.log(this.state.lineData)
         }
      };
 

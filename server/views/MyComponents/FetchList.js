@@ -27,26 +27,27 @@ export default class FetchList extends Component{
     };
 
     onRefresh() {
-      this.props.trigger = !this.props.trigger;
+      if(this.props.route == 'Home'){
+        this.props.handler();
+      }
       this.setState({isFetching: true,},() => {this.fetchData();});
  }
 
-    // useEffect(() => {
-    //   fetch(MainLink() + ':8080')
-    //   .then((res) =>nres.json())
-    //   .then((jsonResp) => this.setState({data: jsonResp}))
-    //   .catch(err => (console.log()));
-    // }, []);
 
     fetchRoute = () => {
       if(this.props.route == 'Home')
-        return MainLink()+':8080/Home'
+        return MainLink()+'Home'
       else if(this.props.route == 'Roomie')
-        return MainLink()+':8080/Roomie'
+        return MainLink()+'Roomie'
     }
   
     fetchData = async () => {
-      const response = await fetch(this.fetchRoute());
+      const response = await fetch(this.fetchRoute(), {
+        method: 'GET',
+        headers: {
+          user: this.props.user,
+        }
+      });
       this.setState({data: await response.json()});
       this.setState({ isFetching: false })
     };
