@@ -32,7 +32,7 @@ export default function AccountScreen(props) {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   const fetchData = async () => {
     console.log(props.route.params.userId);

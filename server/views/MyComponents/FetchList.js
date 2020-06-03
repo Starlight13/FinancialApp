@@ -18,7 +18,7 @@ export default class FetchList extends Component{
     super(props);
     this.state = {
       data: [],
-      isFetching: false
+      isFetching: false,
     }
   }
   
@@ -42,10 +42,13 @@ export default class FetchList extends Component{
     }
   
     fetchData = async () => {
+      console.log(this.props.user);
+      console.log(this.props.roomie);
       const response = await fetch(this.fetchRoute(), {
         method: 'GET',
         headers: {
           user: this.props.user,
+          roomie: this.props.roomie,
         }
       });
       this.setState({data: await response.json()});

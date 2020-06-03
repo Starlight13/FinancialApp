@@ -29,9 +29,9 @@ async function commonExpense(user, roomie){
     });
 }
 
-async function compareExpense(user, roomie){
+async function compareExpense(user){
     return new Promise((resolve, reject) => {
-        pool.query(query.compareExpense(user, roomie), (err, result) =>{
+        pool.query(query.compareExpense(user), (err, result) =>{
             if (err) {throw err}
             resolve(result.rows);
         });

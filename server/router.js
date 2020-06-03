@@ -10,10 +10,7 @@ router.get('/Home', async (ctx, next) => {
 })
 .get('/Roomie', async (ctx, next) => {
     const user = ctx.request.headers.user;
-    const roomie = 0;
-    async () => pool.getRoomie(user)
-    .then((res) => res.json())
-    .then((resJson) => roomie = resJson[0].roomieid)
+    const roomie = ctx.request.headers.roomie;
     ctx.body = await pool.commonExpense(user, roomie)
 })
 .get('/myPay', async (ctx, next) => {
@@ -21,13 +18,11 @@ router.get('/Home', async (ctx, next) => {
     ctx.body = await pool.compareExpense(user);
 })
 .get('/roomiePay', async (ctx, next) => {
-    const user = ctx.request.headers.user;
-    const getRoomie = async () => pool.getRoomie(user)
-    .then((res) => res.json())
-    .then((resJson) =>  roomie = resJson[0].roomieid)
-    ctx.body = await pool.compareExpense(resJson[0].roomieid)
+    const roomie = ctx.request.headers.roomie;
+    ctx.body = await pool.compareExpense(roomie);
 })
 .get('/roomiePie', async (ctx, next) => {
+    const roomie = ctx.request.headers.roomie;
     ctx.body = await pool.getSumByCat(roomie);
 })
 .get('/myPie', async (ctx, next) => {

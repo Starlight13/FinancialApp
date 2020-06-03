@@ -84,7 +84,7 @@ export default function HomeScreen(props) {
                </View>
            </View>
            <View style={{flex: 1}}>            
-          <FetchList route='Home' handler = {fetchExp} user = {user}/>
+          <FetchList route='Home' handler = {fetchExp} user = {user} roomie={-1}/>
           </View>     
           <View style={{ alignItems: 'center'}}>
           <TouchableOpacity onPress={() => props.navigation.navigate("Add Spendings")} style={{ backgroundColor: 'pink', width: 50, height: 50, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>

@@ -41,7 +41,7 @@ const  HomeStackScreen = (props) => {
           />
         )
       }} />
-      <HomeStack.Screen name="Add Spendings" component={AddSpendScreen} options={{
+      <HomeStack.Screen name="Add Spendings" component={AddSpendScreen} initialParams={{userId: props.route.params.userId}} options={{
         headerLeft: () => (
           <Button
             onPress={() => props.navigation.navigate('Home', {screen: 'Home'})}
