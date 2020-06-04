@@ -62,7 +62,6 @@ export default LogInScreen = (props) => {
               });
             }
           }></Button>
-          <Button color="#599ee3" title="Forgot password?" onPress={() => props.navigation.navigate("Forgot Password")}></Button>
         </View>
         <View style={{ flex: 0.6, alignItems: "center", justifyContent: 'center', flexDirection: 'row', backgroundColor: 'pink', width: Math.round(Dimensions.get('screen').width) }}>
           <Text style={{ fontSize: 16 }}>Not registered yet?</Text>

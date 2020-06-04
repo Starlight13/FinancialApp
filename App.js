@@ -1,6 +1,5 @@
 import React from 'react';
-import Routes from './server/views/Routes'
-import ForgotPass from './server/views/Screen/AuthScreens/ForgotPassScreen';
+import Routes from './App/views/Navigation'
 const App: () => React$Node = () => {
   return (
     <Routes/>

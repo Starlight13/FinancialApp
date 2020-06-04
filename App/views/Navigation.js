@@ -17,7 +17,6 @@ import StatisticsScreen from './Screen/StatisticsScreen';
 import MainLink from './Screen/MainLink';
 import LogInScreen from './Screen/AuthScreens/LogInScreen';
 import SignUpScreen from './Screen/AuthScreens/SignUpScreen';
-import ForgotPassScreen from './Screen/AuthScreens/ForgotPassScreen';
 import EditRoomieScreen from './Screen/EditRoomieScreen';
 
 
@@ -89,7 +88,6 @@ export default function Routes() {
         <AuthStack.Navigator>
          <AuthStack.Screen name="Log In" component={LogInScreen} initialParams={{handler: _handler}} options={{ headerShown: false }} />
          <AuthStack.Screen name="Sign Up" component={SignUpScreen} options={{ headerShown: false }} />
-         <AuthStack.Screen name="Forgot Password" component={ForgotPassScreen} options={{ headerShown: false }} />
         </AuthStack.Navigator>
       </NavigationContainer> 
       :

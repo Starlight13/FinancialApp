@@ -93,7 +93,7 @@ export default class RoomieScreen extends Component {
 
 
     fetchMyPay = async () => {
-        const response = await fetch(MainLink() + 'myPay', {
+        const response = await fetch(MainLink() + 'getCommonPay', {
             method: 'GET',
             headers: {
                 user: this.state.user,
@@ -104,10 +104,10 @@ export default class RoomieScreen extends Component {
     };
 
     fetchRoomiePay = async () => {
-        const response = await fetch(MainLink() + 'roomiePay', {
+        const response = await fetch(MainLink() + 'getCommonPay', {
             method: 'GET',
             headers: {
-                roomie: this.state.roomieId,
+                user: this.state.roomieId,
             }
         });
         const json = await response.json()
