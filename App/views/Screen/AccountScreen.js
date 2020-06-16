@@ -75,7 +75,7 @@ export default function AccountScreen(props) {
                     <TextInput style={styles.TextInput}
                       placeholder="Enter new username"
                       onChangeText={text => {setUsername(text)
-                        setUsernameValidation(/^[0-9a-zA-Z]+$/.test(usernameText))
+                        setUsernameValidation(/^[0-9a-zA-Z]+$/.test(changedUsername))
                       }}
                       value={changedUsername}></TextInput>
                     <Button title="Change Username" onPress={() => {
@@ -113,7 +113,7 @@ export default function AccountScreen(props) {
                       placeholder="Enter new password"
                       autoCapitalize='none'
                       onChangeText={text => {setPassword(text)
-                        setPassValidation(passwordText.length >= 8)
+                        setPassValidation(changedPassword.length >= 8)
                       }}
                       value={changedPassword}></TextInput>
                     <Button title="Change Password" onPress={() => {
