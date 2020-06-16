@@ -42,8 +42,6 @@ export default class FetchList extends Component{
     }
   
     fetchData = async () => {
-      console.log(this.props.user);
-      console.log(this.props.roomie);
       const response = await fetch(this.fetchRoute(), {
         method: 'GET',
         headers: {

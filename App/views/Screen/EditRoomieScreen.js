@@ -21,38 +21,44 @@ const SCREEN_WIDTH = Math.round(Dimensions.get('screen').width);
 
 
 
-export default function EditRoomieScreen({navigation, route}) {
-    const {handler} = route.params;
-    const {userId} = route.params;
-    const {roomie} = route.params;
+export default function EditRoomieScreen({ navigation, route }) {
+    const { handler } = route.params;
+    const { userId } = route.params;
+    const { roomie } = route.params;
     const [userInfo, setUserInfo] = useState([{}]);
 
     const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Roomie Deletion",
-      "Are you sure you want to delete roomie?\n Your roomie will miss you...",
-      [
-        {
-          text: "Cancel",
-          onPress: () => {},
-          style: "cancel"
-        },
-        { text: "SURE!", onPress: () => {
-            console.log(userInfo[0].userid);
-            fetch(MainLink()+'deleteRoomie', {
-                method: 'GET',
-                headers: {
-                    user: userId,
-                    roomie: userInfo[0].userid,
+        Alert.alert(
+            "Roomie Deletion",
+            "Are you sure you want to delete roomie?\n Your roomie will miss you...",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => { },
+                    style: "cancel"
+                },
+                {
+                    text: "SURE!", onPress: () => {
+                        console.log(userInfo[0].userid);
+                        let data = {
+                            user: userId,
+                            roomie: userInfo[0].userid
+                        }
+                        fetch(MainLink() + 'deleteRoomie', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        handler();
+                        alert('Roomie deleted. Next time you visit this page you will not see common expenses.')
+                        navigation.navigate('Roomie')
+                    }
                 }
-            });
-            handler();
-            alert('Roomie deleted.')
-            navigation.navigate('Roomie')
-        } }
-      ],
-      { cancelable: false }
-    );
+            ],
+            { cancelable: false }
+        );
 
 
     useEffect(() => {

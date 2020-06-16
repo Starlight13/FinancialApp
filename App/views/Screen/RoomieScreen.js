@@ -123,9 +123,10 @@ export default class RoomieScreen extends Component {
         });
         const json = await response.json()
         for (var i in json) {
-            this.setState({ roomiePie: this.state.roomiePie.concat(json[i].sum),
+            this.setState({
+                roomiePie: this.state.roomiePie.concat(json[i].sum),
                 roomiePieLabels: this.state.roomiePieLabels.concat(json[i].category)
-             });
+            });
         }
     };
 
@@ -139,7 +140,8 @@ export default class RoomieScreen extends Component {
         });
         const json = await response.json()
         for (var i in json) {
-            this.setState({ myPie: this.state.myPie.concat(json[i].sum),
+            this.setState({
+                myPie: this.state.myPie.concat(json[i].sum),
                 myPieLabels: this.state.myPieLabels.concat(json[i].category)
             });
         }
@@ -147,16 +149,41 @@ export default class RoomieScreen extends Component {
 
     addRoomie = async () => {
         this.setState({ isFetching: true })
-        const response = await fetch(MainLink() + 'addRoomie', {
+        let data = {
+            user: this.state.user,
+            roomie: this.state.roomieId
+        }
+
+        fetch(MainLink() + "checkRoomie", {
             method: 'GET',
             headers: {
-                user: this.state.user,
-                roomie: this.state.roomieId
+              user: this.state.roomieId,
             }
-        });
-        const json = await response.json();
-        alert(`Roomie @${json[0].username} successfuly added!`);
-        this.fetchIfRoomie();
+          })
+            .then((resp) => resp.json())
+            .then(async (json) => {
+              if (json[0].userid === -1) {
+                alert('Such user does not exist or already has a roomie')
+                this.fetchIfRoomie();
+              }
+              else {
+                const response = await fetch(MainLink() + 'addRoomie', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                const json = await response.json();
+                alert(`Roomie @${json[0].username} successfuly added!`);
+                this.fetchIfRoomie();
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+
+        
     }
 
     reloadAfterDeletion = async () => {
@@ -203,7 +230,7 @@ export default class RoomieScreen extends Component {
                             console.log(this.state.roomieInfo)
                             this.props.navigation.navigate('Edit Roomie', { roomie: this.state.roomieInfo, handler: this.fetchIfRoomie })
                         }}>
-                                <FontAwesome5 name="user-edit" size={24} color="pink" />
+                            <FontAwesome5 name="user-edit" size={24} color="pink" />
                         </TouchableOpacity>
                     </View>
                     <ScrollView refreshControl={<RefreshControl refreshing={this.state.isFetching} onRefresh={this.onRefresh} />}>
@@ -245,8 +272,8 @@ export default class RoomieScreen extends Component {
                         </View>
                         <Text style={[styles.Text, { textAlign: 'center', color: 'grey' }]}>Tap on pie slices to see more</Text>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <PieChartWithDynamicSlices user="me" values={this.state.myPie} keys = {this.state.myPieLabels} />
-                            <PieChartWithDynamicSlices user="roomie" values={this.state.roomiePie} keys = {this.state.roomiePieLabels} />
+                            <PieChartWithDynamicSlices user="me" values={this.state.myPie} keys={this.state.myPieLabels} />
+                            <PieChartWithDynamicSlices user="roomie" values={this.state.roomiePie} keys={this.state.roomiePieLabels} />
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                             <Text style={[styles.Text, { color: 'grey' }]}>Me</Text>

@@ -30,6 +30,9 @@ export default function AccountScreen(props) {
   const [changedUsername, setUsername] = useState('');
   const [changedPassword, setPassword] = useState('');
 
+  const [passValidation, setPassValidation] = useState(false);
+  const [usernameValidation, setUsernameValidation] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -71,18 +74,28 @@ export default function AccountScreen(props) {
                   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: SCREEN_WIDTH, marginVertical: 7 }}>
                     <TextInput style={styles.TextInput}
                       placeholder="Enter new username"
-                      onChangeText={text => setUsername(text)}
+                      onChangeText={text => {setUsername(text)
+                        setUsernameValidation(/^[0-9a-zA-Z]+$/.test(usernameText))
+                      }}
                       value={changedUsername}></TextInput>
                     <Button title="Change Username" onPress={() => {
-                      fetch(MainLink() + "changeUsername", {
-                        method: 'GET',
-                        headers: {
+                      if (usernameValidation) {
+                        let data = {
                           user: props.route.params.userId,
-                          username: changedUsername,
+                          username: changedUsername
                         }
-                      });
-                      alert(`Username changed to @${changedUsername}`);
-                      fetchData();
+                        fetch(MainLink() + "changeUsername", {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify(data)
+                        });
+                        alert(`Username changed to @${changedUsername}`);
+                        fetchData();
+                      }
+                      else ("Username should only contain letters and numbers")
+
                     }}></Button>
                   </View>
                 </>
@@ -98,17 +111,29 @@ export default function AccountScreen(props) {
                   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: SCREEN_WIDTH, marginVertical: 7 }}>
                     <TextInput style={styles.TextInput}
                       placeholder="Enter new password"
-                      onChangeText={text => setPassword(text)}
+                      autoCapitalize='none'
+                      onChangeText={text => {setPassword(text)
+                        setPassValidation(passwordText.length >= 8)
+                      }}
                       value={changedPassword}></TextInput>
                     <Button title="Change Password" onPress={() => {
-                      fetch(MainLink() + "changePass", {
-                        method: 'GET',
-                        headers: {
+                      if (passValidation) {
+                        let data = {
                           user: props.route.params.userId,
-                          password: changedPassword,
+                          password: changedPassword
                         }
-                      });
-                      alert('Password Changed!')
+                        fetch(MainLink() + "changePass", {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify(data)
+                        });
+                        alert('Password Changed!')
+                      }
+                      else {
+                        alert("Password should be at least 8 symbols long")
+                      }
                     }}></Button>
                   </View>
                 </>

@@ -58,22 +58,38 @@ export default function AddSpendScreen(props) {
 
   const [nameText, changeName] = useState("");
   const [priceText, changePrice] = useState("");
-  const [infoText, changeInfo] = useState("-")
+  const [infoText, changeInfo] = useState("")
+
+  const [nameValidation, setNameValidation] = useState(false);
+  const [priceValidation, setPriceValidation] = useState(false);
 
   const postResult = () => {
-    var headers = {
-      user: user,
-      name: nameText,
-      price: priceText,
-      category: result,
-      info: infoText,
-      roomiebool: isEnabled
+    if (nameValidation && priceValidation) {
+      let data = {
+        user: user,
+        name: nameText,
+        price: priceText,
+        category: result,
+        info: infoText == ''? 'no info' : infoText,
+        roomiebool: isEnabled
+      }
+      console.log(data);
+      fetch(MainLink() + "addSpend", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response) => response.json())
+        .finally(() => props.navigation.navigate('Home', { screen: 'Home' }))
     }
-    fetch(MainLink() + "addSpend", {
-      headers: headers
-    })
-      .then((response) => response.json())
-      .finally(() => props.navigation.navigate('Home', { screen: 'Home' }))
+    else if(!nameValidation){
+      alert('Item name should be at least 3 symbols long')
+    }
+    else{
+      alert('Price should be an integer')
+    }
   }
   return (
     postResult,
@@ -85,7 +101,9 @@ export default function AddSpendScreen(props) {
             <TextInput style={styles.TextInput}
               textAlign="center"
               placeholder="What did you buy?"
-              onChangeText={text => changeName(text)}
+              onChangeText={text => {changeName(text)
+                setNameValidation(nameText.length >= 3);
+              }}
               value={nameText}></TextInput>
           </View>
           <View>
@@ -94,7 +112,9 @@ export default function AddSpendScreen(props) {
               textAlign="center"
               placeholder="How much?"
               keyboardType="decimal-pad"
-              onChangeText={text => changePrice(text)}
+              onChangeText={text => {changePrice(text)
+                setPriceValidation(/^-?\d*(\.\d+)?$/.test(priceText));
+              }}
               value={priceText}></TextInput>
             <Text style={styles.Text}>Category:</Text>
           </View>
